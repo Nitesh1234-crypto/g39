@@ -3,87 +3,14 @@ const app = express();
 app.use(express.json());  //this will parse json data
 app.use(express.urlencoded({extended:true})); //this will parse urlencoded data
 //create
-const { PrismaClient } =require('@prisma/client');
-const prisma = new PrismaClient()
 
 
-app.post("/users",async (req,res)=>{
-    const {name ,email,password} = req.body;
-    const newUser = await prisma.user.create({
-        data: {
-          name:name,
-          email:email,
-          password:password
-        },
-      })
-    res.send(newUser)
-})
-
-// //read
-//read data of a specific user
-app.get("/users/:id",async(req,res)=>{
-    const {id} = req.params;
-    let user=await prisma.user.findUnique({
-         where:{
-            id:parseInt(id)
-         }
-    })
-    res.send(user);
-
-})
-
-// //update
-app.put("/users",async(req,res)=>{
-  let {name,email,password} = req.body;
-  let {id} = req.query;
-  const updateUser = await prisma.user.update({
-    where: {
-      id:parseInt(id),
-    },
-    data: {
-      name: name,
-      email:email,
-      password:password
-    },
-  })
-  res.send("user updated successfully!!!!")
-
-})
+app.use("/api/users",require("./routes/users"))
+app.use("/api/blog",require("./routes/blogs"))
+app.use("/api/auth",require("./routes/auth"))
 
 
-// //delete
-// app.delete()
 
-app.get("/blogs",async(req,res)=>{
-   let allblogs= await prisma.blog.findMany({
-      include:{
-        user:{
-          select:{
-            name:true
-          }
-        }
-      }
-
-   });
-   res.send(allblogs)
-  
-})
-app.get("/allblogs",async(req,res)=>{
-  let allblogs= await prisma.blog.findMany({
-
-   select:{
-    title:true,
-    content:true,
-    user:{
-      select:{
-        name:true
-      }
-    }
-   }
-
- });
- res.send(allblogs)
-})
 
 
 app.listen(4565,()=>{
