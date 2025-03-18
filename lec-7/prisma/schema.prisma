@@ -28,3 +28,8 @@ model Blog{
   userid Int
   user User @relation(fields: [userid], references: [id] ,onDelete: Cascade)
 }
+model Token{
+  id Int @id @default(autoincrement())
+  token String
+  userId Int
+}

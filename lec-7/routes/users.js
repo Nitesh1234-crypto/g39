@@ -21,6 +21,12 @@ router.post("/",async (req,res)=>{
       //token--->userid
       let token=Math.floor(Math.random()*1000000)
       let userId=newUser.id;
+      let newToken= await prisma.token.create({
+        data:{
+          token:token,
+          userId:userId
+        }
+      })
       let URL=`http://localhost:4565/api/verify/${token}/${userId}`
       sendMail(email,URL);
     res.send("please click the link on your mail to verify!!")

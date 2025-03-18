@@ -8,6 +8,7 @@ app.use(express.urlencoded({extended:true})); //this will parse urlencoded data
 app.use("/api/users",require("./routes/users"))
 app.use("/api/blog",require("./routes/blogs"))
 app.use("/api/auth",require("./routes/auth"))
+app.use("api/verify",require("./routes/verifyEmail"))
 
 
 
